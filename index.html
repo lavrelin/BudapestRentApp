@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apartment Rental in Budapest | Cyberpunk Style</title>
-    <meta name="description" content="Find your perfect apartment in Budapest. Modern, cyberpunk-style rental platform.">
+    <title>Apartment Rental in Budapest | Premium Living</title>
+    <meta name="description" content="Find your perfect apartment in Budapest. Premium rental platform with exclusive properties.">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap');
 
         * {
             margin: 0;
@@ -19,285 +19,454 @@
         }
 
         :root {
-            --neon-blue: #00f3ff;
-            --neon-pink: #ff00ff;
-            --neon-purple: #b026ff;
-            --neon-green: #39ff14;
-            --dark-bg: #0a0a0f;
-            --dark-card: #1a1a2e;
-            --dark-secondary: #16213e;
+            --gold: #D4AF37;
+            --dark-gold: #B8941F;
+            --navy: #0A1628;
+            --dark-navy: #050B14;
+            --light-cream: #F5F5F0;
+            --accent-blue: #4A90E2;
         }
 
         body {
-            font-family: 'Rajdhani', sans-serif;
-            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
-            background-attachment: fixed;
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-navy);
             color: #fff;
             line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* Animated Background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(0, 243, 255, 0.05) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.05) 0%, transparent 50%);
-            pointer-events: none;
-            animation: bgPulse 10s ease-in-out infinite;
-            z-index: -1;
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--dark-navy) 0%, var(--navy) 50%, #1a2942 100%);
+            overflow: hidden;
         }
 
-        @keyframes bgPulse {
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(74, 144, 226, 0.1) 0%, transparent 50%);
+            animation: heroGlow 8s ease-in-out infinite;
+        }
+
+        @keyframes heroGlow {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.6; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem;
+            max-width: 1200px;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, var(--gold) 50%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+
+        .hero-btn {
+            padding: 1.25rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .hero-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--dark-gold) 100%);
+            color: var(--dark-navy);
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+            border: 2px solid var(--gold);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        header.scrolled {
+            background: rgba(10, 22, 40, 0.98);
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-
-        /* Header */
-        header {
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 2px solid var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            padding: 0 2rem;
         }
 
         .header-main {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 0;
+            padding: 1.5rem 0;
         }
 
         .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-purple) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--gold);
+            letter-spacing: 1px;
         }
 
         .nav-desktop {
             display: flex;
-            gap: 0.5rem;
+            gap: 1rem;
         }
 
         .nav-desktop button {
             padding: 0.75rem 1.5rem;
-            border: 2px solid var(--neon-blue);
+            border: 2px solid transparent;
             background: transparent;
-            color: var(--neon-blue);
+            color: rgba(255, 255, 255, 0.8);
             border-radius: 8px;
             cursor: pointer;
-            font-family: 'Rajdhani', sans-serif;
             font-weight: 600;
             font-size: 1rem;
             transition: all 0.3s;
             position: relative;
-            overflow: hidden;
         }
 
-        .nav-desktop button::before {
+        .nav-desktop button::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
-            transition: left 0.5s;
-        }
-
-        .nav-desktop button:hover::before {
-            left: 100%;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: all 0.3s;
+            transform: translateX(-50%);
         }
 
         .nav-desktop button:hover {
-            box-shadow: 0 0 20px var(--neon-blue);
-            transform: translateY(-2px);
+            color: #fff;
+        }
+
+        .nav-desktop button:hover::after {
+            width: 80%;
         }
 
         .nav-desktop button.active {
-            background: var(--neon-blue);
-            color: #000;
-            box-shadow: 0 0 30px var(--neon-blue);
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
+            color: var(--gold);
+            border-color: var(--gold);
         }
 
         .btn-lang {
             padding: 0.5rem 1rem;
-            background: linear-gradient(135deg, var(--neon-purple) 0%, var(--neon-pink) 100%);
-            border: none;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
             border-radius: 8px;
-            color: #fff;
+            color: var(--gold);
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
         }
 
         .btn-lang:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--neon-pink);
+            background: var(--gold);
+            color: var(--dark-navy);
         }
 
-        /* Action Buttons Bar */
-        .action-buttons {
-            background: rgba(22, 33, 62, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem 0;
-            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+        /* Featured Section */
+        .featured-section {
+            padding: 4rem 0;
+            background: linear-gradient(180deg, var(--dark-navy) 0%, var(--navy) 100%);
         }
 
-        .action-grid {
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 300;
+        }
+
+        /* Apartments Grid */
+        .apartments-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .apartment-card {
+            background: linear-gradient(135deg, rgba(26, 41, 66, 0.8) 0%, rgba(10, 22, 40, 0.9) 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .apartment-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--gold), transparent, var(--accent-blue));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .apartment-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(212, 175, 55, 0.3);
+        }
+
+        .apartment-card:hover::before {
+            opacity: 1;
+        }
+
+        .apartment-image {
+            position: relative;
+            height: 280px;
+            overflow: hidden;
+        }
+
+        .apartment-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+
+        .apartment-card:hover .apartment-image img {
+            transform: scale(1.15);
+        }
+
+        .badge {
+            position: absolute;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            backdrop-filter: blur(10px);
+        }
+
+        .badge-type {
+            top: 1.5rem;
+            right: 1.5rem;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--dark-gold) 100%);
+            color: var(--dark-navy);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .badge-verified {
+            top: 1.5rem;
+            left: 1.5rem;
+            background: rgba(74, 226, 74, 0.9);
+            color: #000;
+        }
+
+        .apartment-info {
+            padding: 2rem;
+        }
+
+        .apartment-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: #fff;
+        }
+
+        .apartment-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+        }
+
+        .detail-icon {
+            font-size: 1.3rem;
+        }
+
+        .price {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        .apartment-actions {
+            display: grid;
+            grid-template-columns: 1fr;
             gap: 1rem;
         }
 
-        .action-btn {
-            padding: 1.25rem 2rem;
-            border: 2px solid;
-            border-radius: 12px;
+        .apartment-actions button,
+        .apartment-actions a {
+            padding: 1rem;
+            border-radius: 10px;
+            border: 2px solid var(--gold);
+            background: transparent;
+            color: var(--gold);
             cursor: pointer;
-            font-family: 'Rajdhani', sans-serif;
             font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s;
             text-align: center;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .apartment-actions button:hover,
+        .apartment-actions a:hover {
+            background: var(--gold);
+            color: var(--dark-navy);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .contact-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 0.75rem;
-            position: relative;
-            overflow: hidden;
         }
 
-        .action-btn-1 {
-            background: linear-gradient(135deg, rgba(0, 243, 255, 0.1) 0%, rgba(0, 243, 255, 0.05) 100%);
-            border-color: var(--neon-blue);
-            color: var(--neon-blue);
+        .contact-btn {
+            padding: 0.75rem !important;
+            font-size: 0.9rem !important;
         }
 
-        .action-btn-1:hover {
-            background: var(--neon-blue);
-            color: #000;
-            box-shadow: 0 0 30px var(--neon-blue);
-            transform: translateY(-3px);
-        }
-
-        .action-btn-2 {
-            background: linear-gradient(135deg, rgba(57, 255, 20, 0.1) 0%, rgba(57, 255, 20, 0.05) 100%);
-            border-color: var(--neon-green);
-            color: var(--neon-green);
-        }
-
-        .action-btn-2:hover {
-            background: var(--neon-green);
-            color: #000;
-            box-shadow: 0 0 30px var(--neon-green);
-            transform: translateY(-3px);
-        }
-
-        .action-btn-3 {
-            background: linear-gradient(135deg, rgba(255, 0, 255, 0.1) 0%, rgba(255, 0, 255, 0.05) 100%);
-            border-color: var(--neon-pink);
-            color: var(--neon-pink);
-        }
-
-        .action-btn-3:hover {
-            background: var(--neon-pink);
-            color: #000;
-            box-shadow: 0 0 30px var(--neon-pink);
-            transform: translateY(-3px);
-        }
-
-        /* Main Content */
-        main {
-            padding: 2rem 0;
-            min-height: 100vh;
-        }
-
-        /* Map Section */
-        .map-section {
-            margin-bottom: 2rem;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
-        }
-
-        #map {
-            height: 500px;
-            width: 100%;
-        }
-
-        .map-legend {
-            background: rgba(26, 26, 46, 0.95);
-            padding: 1rem;
-            border-top: 2px solid var(--neon-blue);
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .legend-marker {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 2px solid #fff;
-        }
-
-        .legend-apartment { background: var(--neon-blue); }
-        .legend-room { background: var(--neon-green); }
-
-        /* Filters */
+        /* Filters Section */
         .filters-section {
-            background: rgba(26, 26, 46, 0.8);
-            backdrop-filter: blur(10px);
-            border: 2px solid var(--neon-purple);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 0 20px rgba(176, 38, 255, 0.2);
+            background: rgba(26, 41, 66, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 3rem 0;
         }
 
         .filters-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .filter-group label {
             display: block;
-            color: var(--neon-blue);
+            color: var(--gold);
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
             text-transform: uppercase;
             font-size: 0.9rem;
             letter-spacing: 1px;
@@ -306,12 +475,11 @@
         .filter-group select,
         .filter-group input {
             width: 100%;
-            padding: 0.75rem;
-            background: rgba(10, 10, 15, 0.8);
-            border: 2px solid rgba(0, 243, 255, 0.3);
-            border-radius: 8px;
+            padding: 1rem;
+            background: rgba(10, 22, 40, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
             color: #fff;
-            font-family: 'Rajdhani', sans-serif;
             font-size: 1rem;
             transition: all 0.3s;
         }
@@ -319,284 +487,96 @@
         .filter-group select:focus,
         .filter-group input:focus {
             outline: none;
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .sort-section {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
         }
 
         .filters-actions {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             justify-content: center;
         }
 
-        .btn-primary {
-            padding: 0.75rem 2rem;
-            background: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-purple) 100%);
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1rem;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px var(--neon-blue);
-        }
-
-        .btn-secondary {
-            padding: 0.75rem 2rem;
-            background: transparent;
-            border: 2px solid var(--neon-pink);
-            border-radius: 8px;
-            color: var(--neon-pink);
-            font-weight: 700;
-            cursor: pointer;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1rem;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-secondary:hover {
-            background: var(--neon-pink);
-            color: #000;
-            box-shadow: 0 0 20px var(--neon-pink);
-        }
-
-        /* Apartments Grid */
-        .apartments-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-
-        .apartment-card {
-            background: rgba(26, 26, 46, 0.8);
-            backdrop-filter: blur(10px);
-            border: 2px solid transparent;
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.4s;
-            position: relative;
-        }
-
-        .apartment-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 16px;
-            padding: 2px;
-            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .apartment-card:hover::before {
-            opacity: 1;
-        }
-
-        .apartment-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 40px rgba(0, 243, 255, 0.4);
-        }
-
-        .apartment-image {
-            position: relative;
-            height: 220px;
-            overflow: hidden;
-        }
-
-        .apartment-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s;
-        }
-
-        .apartment-card:hover .apartment-image img {
-            transform: scale(1.1);
-        }
-
-        .badge {
-            position: absolute;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .badge-type {
-            top: 1rem;
-            right: 1rem;
-            background: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-purple) 100%);
-            box-shadow: 0 0 15px var(--neon-blue);
-        }
-
-        .badge-verified {
-            top: 1rem;
-            left: 1rem;
-            background: var(--neon-green);
-            color: #000;
-            box-shadow: 0 0 15px var(--neon-green);
-        }
-
-        .apartment-info {
-            padding: 1.5rem;
-        }
-
-        .apartment-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #fff 0%, var(--neon-blue) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .apartment-details {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .detail-row {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.95rem;
-        }
-
-        .detail-icon {
-            color: var(--neon-blue);
-            font-size: 1.2rem;
-        }
-
-        .price {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--neon-green) 0%, var(--neon-blue) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .apartment-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
-        }
-
-        .apartment-actions button,
-        .apartment-actions a {
-            padding: 0.75rem;
-            border-radius: 8px;
+        .btn-filter {
+            padding: 1rem 3rem;
+            border-radius: 10px;
             border: 2px solid;
             cursor: pointer;
-            font-weight: 600;
-            text-align: center;
-            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
             transition: all 0.3s;
-            font-family: 'Rajdhani', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .btn-details {
-            background: transparent;
-            color: var(--neon-purple);
-            border-color: var(--neon-purple);
-        }
-
-        .btn-details:hover {
-            background: var(--neon-purple);
-            color: #000;
-            box-shadow: 0 0 20px var(--neon-purple);
-        }
-
-        .btn-contact {
-            background: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-purple) 100%);
-            color: #fff;
+        .btn-apply {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--dark-gold) 100%);
+            color: var(--dark-navy);
             border-color: transparent;
         }
 
-        .btn-contact:hover {
-            box-shadow: 0 0 25px var(--neon-blue);
+        .btn-apply:hover {
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.4);
             transform: translateY(-2px);
         }
 
-        /* Footer */
-        footer {
-            background: rgba(26, 26, 46, 0.95);
+        .btn-reset {
+            background: transparent;
+            color: var(--gold);
+            border-color: var(--gold);
+        }
+
+        .btn-reset:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* Map Section */
+        .map-section {
+            margin: 4rem 0;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+
+        .map-legend {
+            background: rgba(10, 22, 40, 0.95);
             backdrop-filter: blur(10px);
-            border-top: 2px solid var(--neon-blue);
-            margin-top: 4rem;
-            padding: 3rem 0 1.5rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-section h3 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--neon-blue);
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .footer-section p {
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.8;
-        }
-
-        .social-links {
+            padding: 1.5rem;
+            border-top: 2px solid var(--gold);
             display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            border: 2px solid var(--neon-blue);
-            border-radius: 8px;
+        .legend-item {
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: var(--neon-blue);
-            transition: all 0.3s;
+            gap: 0.75rem;
+            font-weight: 600;
         }
 
-        .social-links a:hover {
-            background: var(--neon-blue);
-            color: #000;
-            box-shadow: 0 0 20px var(--neon-blue);
-            transform: translateY(-3px);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(0, 243, 255, 0.2);
-            padding-top: 1.5rem;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.9rem;
+        .legend-marker {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 0 15px currentColor;
         }
 
         /* Modal */
@@ -607,7 +587,7 @@
             background: rgba(0, 0, 0, 0.9);
             backdrop-filter: blur(10px);
             z-index: 2000;
-            padding: 1rem;
+            padding: 2rem;
             overflow-y: auto;
         }
 
@@ -618,14 +598,72 @@
         }
 
         .modal-content {
-            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.95) 100%);
-            border: 2px solid var(--neon-blue);
-            border-radius: 16px;
-            max-width: 900px;
+            background: #fff;
+            color: #000;
+            max-width: 1000px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 0 50px rgba(0, 243, 255, 0.5);
+            border-radius: 20px;
+            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-navy);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.8;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--gold);
+            color: var(--dark-navy);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.4);
         }
 
         /* Responsive */
@@ -634,40 +672,42 @@
                 display: none;
             }
 
-            .action-grid {
-                grid-template-columns: 1fr;
+            .hero-title {
+                font-size: 3rem;
             }
 
-            #map {
-                height: 350px;
+            .hero-actions {
+                flex-direction: column;
             }
 
             .apartments-grid {
                 grid-template-columns: 1fr;
             }
-        }
 
-        /* Loading Animation */
-        @keyframes neonPulse {
-            0%, 100% {
-                text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 30px var(--neon-blue);
-            }
-            50% {
-                text-shadow: 0 0 20px var(--neon-blue), 0 0 30px var(--neon-blue), 0 0 40px var(--neon-blue);
+            #map {
+                height: 400px;
             }
         }
 
-        .neon-text {
-            animation: neonPulse 2s ease-in-out infinite;
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
     <!-- Header -->
-    <header>
+    <header id="header">
         <div class="container">
             <div class="header-main">
-                <div class="logo neon-text">Apartment Rental<br>in Budapest</div>
+                <div class="logo">BUDAPEST RENT</div>
 
                 <nav class="nav-desktop">
                     <button class="active" onclick="setActiveTab('longterm')" data-translate="longterm">Long-term</button>
@@ -681,60 +721,84 @@
         </div>
     </header>
 
-    <!-- Action Buttons -->
-    <div class="action-buttons">
-        <div class="container">
-            <div class="action-grid">
-                <a href="https://t.me/your_telegram" target="_blank" class="action-btn action-btn-1">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Find Your Perfect<br>Budapest Home</h1>
+            <p class="hero-subtitle">Premium apartments • Verified properties • Direct contact</p>
+            
+            <div class="hero-actions">
+                <a href="#" onclick="openOfferForm(); return false;" class="hero-btn btn-primary">
                     <span>📝</span>
                     <span data-translate="offer">Offer Your Apartment</span>
                 </a>
-                <a href="https://t.me/your_telegram" target="_blank" class="action-btn action-btn-2">
+                <button onclick="openSearchForm()" class="hero-btn btn-secondary">
                     <span>🔍</span>
-                    <span data-translate="looking">Looking for Apartment</span>
-                </a>
-                <a href="https://t.me/your_telegram" target="_blank" class="action-btn action-btn-3">
-                    <span>👥</span>
-                    <span data-translate="roommate">Find Roommate</span>
-                </a>
+                    <span data-translate="search">Search</span>
+                </button>
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- Main Content -->
     <main>
-        <div class="container">
-            <!-- Map Section -->
-            <div class="map-section">
+        <!-- Featured Apartments -->
+        <section class="featured-section">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2 class="section-title" data-translate="featured">Featured Properties</h2>
+                    <p class="section-subtitle" data-translate="featuredDesc">Handpicked exclusive apartments just for you</p>
+                </div>
+
+                <div id="featuredContainer" class="fade-in">
+                    <!-- Featured apartments will be here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Filters & All Apartments -->
+        <section class="container">
+            <!-- Filters -->
+            <div class="filters-section fade-in">
+                <div class="filters-grid" id="filtersGrid">
+                    <!-- Will be populated by JS -->
+                </div>
+                
+                <div class="sort-section">
+                    <label style="color: var(--gold); font-weight: 600; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;" data-translate="sortBy">Sort by:</label>
+                    <select id="sortSelect" onchange="updateSort(this.value)" style="padding: 0.75rem 1.5rem; background: rgba(10, 22, 40, 0.8); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 10px; color: #fff; font-size: 1rem; cursor: pointer;">
+                        <option value="newest" data-translate="sortNewest">Newest</option>
+                        <option value="priceAsc" data-translate="sortPriceAsc">Price: Low to High</option>
+                        <option value="priceDesc" data-translate="sortPriceDesc">Price: High to Low</option>
+                    </select>
+                </div>
+
+                <div class="filters-actions">
+                    <button class="btn-filter btn-apply" onclick="applyFilters()" data-translate="apply">Apply</button>
+                    <button class="btn-filter btn-reset" onclick="resetFilters()" data-translate="reset">Reset</button>
+                </div>
+            </div>
+
+            <!-- All Apartments -->
+            <div id="apartmentsContainer" class="fade-in">
+                <!-- Will be populated by JS -->
+            </div>
+
+            <!-- Map -->
+            <div class="map-section fade-in">
                 <div id="map"></div>
                 <div class="map-legend">
                     <div class="legend-item">
-                        <div class="legend-marker legend-apartment"></div>
+                        <div class="legend-marker" style="background: var(--gold);"></div>
                         <span data-translate="legendApartment">Apartment</span>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-marker legend-room"></div>
+                        <div class="legend-marker" style="background: var(--accent-blue);"></div>
                         <span data-translate="legendRoom">Room</span>
                     </div>
                 </div>
             </div>
-
-            <!-- Filters -->
-            <div class="filters-section" id="filtersSection">
-                <div class="filters-grid" id="filtersGrid">
-                    <!-- Will be populated by JS -->
-                </div>
-                <div class="filters-actions">
-                    <button class="btn-primary" onclick="applyFilters()" data-translate="apply">Apply</button>
-                    <button class="btn-secondary" onclick="resetFilters()" data-translate="reset">Reset</button>
-                </div>
-            </div>
-
-            <!-- Apartments Grid -->
-            <div id="apartmentsContainer">
-                <!-- Will be populated by JS -->
-            </div>
-        </div>
+        </section>
     </main>
 
     <!-- Footer -->
@@ -743,7 +807,7 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h3 data-translate="about">About</h3>
-                    <p data-translate="aboutText">Modern platform for finding apartments and rooms in Budapest. Cyberpunk style, convenient filters, interactive map.</p>
+                    <p data-translate="aboutText">Premium platform for finding apartments and rooms in Budapest. Verified properties, direct contact with owners, no commissions.</p>
                     <div class="social-links">
                         <a href="https://t.me/your_telegram" target="_blank">TG</a>
                         <a href="https://wa.me/36701234567" target="_blank">WA</a>
@@ -760,21 +824,26 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>© 2025 Apartment Rental in Budapest • Made with 💜 in Budapest</p>
+                <p>© 2025 Budapest Rent • Premium Living in Budapest</p>
             </div>
         </div>
     </footer>
 
-    <!-- Modal for apartment details -->
-    <div class="modal" id="detailsModal">
-        <div class="modal-content" id="modalContent">
-            <!-- Will be populated by JS -->
-        </div>
-    </div>
+    <!-- Search Form Modal -->
+    <div class="modal" id="searchModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div style="padding: 2.5rem;">
+                <button onclick="closeSearchForm()" style="position: absolute; top: 1rem; right: 1rem; width: 40px; height: 40px; border: none; background: #f5f5f5; border-radius: 50%; cursor: pointer; font-size: 1.5rem;">×</button>
+                
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 1rem;">🔍 <span data-translate="searchTitle">Property Search</span></h2>
+                <p style="color: #666; margin-bottom: 2rem;" data-translate="searchDesc">Fill out the form and we'll notify you as soon as a suitable property becomes available</p>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-    <script src="apartments.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
+                <form id="searchForm" onsubmit="handleSearchSubmit(event)">
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #333;" data-translate="searchName">Your Name</label>
+                        <input type="text" name="name" required style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #333;" data-translate="searchContact">Contact (Telegram/WhatsApp)</label>
+                        <input type="text" name="contact" required placeholder="@username or +36..."
