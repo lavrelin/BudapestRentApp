@@ -44,7 +44,7 @@ const apartmentsData = [
     status: "available",
     
     title: {
-      ru: "1-комнатная в Терезвароше",
+      ru: "1-комнатная в зугло",
       en: "1-room in Terézváros"
     },
     
