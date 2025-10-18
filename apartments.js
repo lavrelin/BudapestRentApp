@@ -1,5 +1,4 @@
 // БАЗА ДАННЫХ КВАРТИР И КОМНАТ
-// Cyberpunk Edition
 
 const apartmentsData = [
   // ПРИМЕР 1: Квартира - Центр
