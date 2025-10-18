@@ -846,4 +846,296 @@
 
                     <div style="margin-bottom: 1.5rem;">
                         <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #333;" data-translate="searchContact">Contact (Telegram/WhatsApp)</label>
-                        <input type="text" name="contact" required placeholder="@username or +36..."
+                        <input type="text" name="contact" required placeholder="@username or +36..." style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #333;" data-translate="searchDistrict">Preferred District</label>
+                        <select name="district" multiple style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; min-height: 120px;">
+                            <option value="Central">Central (V, VI, VII)</option>
+                            <option value="East">East (VIII, IX, X, XIV)</option>
+                            <option value="West">West/Buda (I, II, III, XI, XII)</option>
+                            <option value="South">South (XI, XX, XXI)</option>
+                            <option value="North">North (III, XV-XIX, XXII, XXIII)</option>
+                        </select>
+                        <small style="color: #999; font-size: 0.85rem;">Hold Ctrl (Cmd) to select multiple</small>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #333;" data-translate="searchBudget">Budget (Ft/month)</label>
+                        <div style="display: flex; gap: 1rem;">
+                            <input type="number" name="budgetMin" placeholder="From" style="flex: 1; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
+                            <input type="number" name="budgetMax" placeholder="To" style="flex: 1; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #333;" data-translate="searchType">Property Type</label>
+                        <select name="type" style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
+                            <option value="any">Any</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="room">Room</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #333;" data-translate="searchComment">Additional Requirements</label>
+                        <textarea name="comment" rows="3" style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; resize: vertical;"></textarea>
+                    </div>
+
+                    <button type="submit" style="width: 100%; padding: 1.25rem; background: linear-gradient(135deg, var(--gold) 0%, var(--dark-gold) 100%); color: var(--dark-navy); border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.3s;">
+                        <span data-translate="searchSubmit">🔔 Notify Me</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details Modal -->
+    <div class="modal" id="detailsModal">
+        <div class="modal-content" id="modalContent">
+            <!-- Will be populated by JS -->
+        </div>
+    </div>
+
+    <style>
+        /* Classic Modal Styles */
+        .modal-classic-header {
+            padding: 2.5rem;
+            border-bottom: 1px solid #e0e0e0;
+            position: relative;
+        }
+
+        .modal-classic-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #000;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-classic-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .modal-close-classic {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 45px;
+            height: 45px;
+            border: none;
+            background: #f5f5f5;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 1.8rem;
+            color: #666;
+        }
+
+        .modal-close-classic:hover {
+            background: #e0e0e0;
+            color: #000;
+            transform: rotate(90deg);
+        }
+
+        .modal-classic-body {
+            padding: 2.5rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .modal-image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .modal-image-gallery img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .modal-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .modal-info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .modal-info-label {
+            font-size: 0.85rem;
+            color: #999;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .modal-info-value {
+            font-size: 1.4rem;
+            color: #000;
+            font-weight: 700;
+        }
+
+        .modal-description {
+            margin-bottom: 2.5rem;
+        }
+
+        .modal-description h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: #000;
+        }
+
+        .modal-description p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .modal-contact-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.25rem;
+            padding-top: 2.5rem;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .modal-contact-btn {
+            padding: 1.25rem 1.75rem;
+            border: 2px solid #000;
+            background: #fff;
+            color: #000;
+            border-radius: 12px;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .modal-contact-btn:hover {
+            background: #000;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-contact-btn.telegram {
+            border-color: #0088cc;
+            color: #0088cc;
+        }
+
+        .modal-contact-btn.telegram:hover {
+            background: #0088cc;
+            color: #fff;
+        }
+
+        .modal-contact-btn.whatsapp {
+            border-color: #25D366;
+            color: #25D366;
+        }
+
+        .modal-contact-btn.whatsapp:hover {
+            background: #25D366;
+            color: #fff;
+        }
+
+        .modal-contact-btn.facebook {
+            border-color: #1877F2;
+            color: #1877F2;
+        }
+
+        .modal-contact-btn.facebook:hover {
+            background: #1877F2;
+            color: #fff;
+        }
+    </style>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="apartments.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+            
+            // Header scroll effect
+            window.addEventListener('scroll', () => {
+                const header = document.getElementById('header');
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        });
+
+        // Search form functions
+        function openSearchForm() {
+            document.getElementById('searchModal').classList.add('active');
+        }
+
+        function closeSearchForm() {
+            document.getElementById('searchModal').classList.remove('active');
+        }
+
+        function openOfferForm() {
+            window.open('https://t.me/your_telegram', '_blank');
+        }
+
+        function handleSearchSubmit(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = {
+                name: formData.get('name'),
+                contact: formData.get('contact'),
+                district: Array.from(formData.getAll('district')),
+                budgetMin: formData.get('budgetMin'),
+                budgetMax: formData.get('budgetMax'),
+                type: formData.get('type'),
+                comment: formData.get('comment')
+            };
+            
+            console.log('Search request:', data);
+            
+            alert('✅ Request received!\n\nWe will notify you as soon as a suitable property becomes available.\n\nContact: ' + data.contact);
+            
+            closeSearchForm();
+            e.target.reset();
+        }
+    </script>
+</body>
+</html>
