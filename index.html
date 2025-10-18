@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BudapestRent - Аренда квартир в Будапеште без посредников</title>
+    <meta name="description" content="Актуальные квартиры и комнаты в Будапеште. Прямой контакт с владельцем, без комиссий.">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f9fafb;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1a1a1a;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            fill: #0066cc;
+        }
+
+        .nav-desktop {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-desktop button {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .nav-desktop button:hover {
+            background: #f3f4f6;
+        }
+
+        .nav-desktop button.active {
+            background: #0066cc;
+            color: white;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-need-apt {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .btn-need-apt:hover {
+            background: #15803d;
+        }
+
+        .btn-lang {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: #f3f4f6;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-lang:hover {
+            background: #e5e7eb;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            padding: 0.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .contact-bar {
+            background: #eff6ff;
+            border-top: 1px solid #bfdbfe;
+            padding: 0.5rem 0;
+        }
+
+        .contact-bar-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .contact-bar-content a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #374151;
+            text-decoration: none;
+        }
+
+        .contact-bar-content a:hover {
+            color: #0066cc;
+        }
+
+        /* Main Content */
+        main {
+            padding: 2rem 0;
+        }
+
+        /* Filters */
+        .filters-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: white;
+            border: none;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            cursor: pointer;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .filters-panel {
+            display: none;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .filters-panel.active {
+            display: block;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
+        }
+
+        .price-inputs {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .price-inputs input {
+            flex: 1;
+        }
+
+        .filters-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-primary {
+            padding: 0.5rem 1.5rem;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background: #0052a3;
+        }
+
+        .btn-secondary {
+            padding: 0.5rem 1.5rem;
+            background: #e5e7eb;
+            color: #374151;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+
+        /* Apartments Grid */
+        .apartments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .apartment-card {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+        }
+
+        .apartment-card:hover {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .apartment-card.rented {
+            opacity: 0.75;
+        }
+
+        .apartment-image {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .apartment-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .badge {
+            position: absolute;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-verified {
+            top: 0.5rem;
+            right: 0.5rem;
+            background: #16a34a;
+            color: white;
+        }
+
+        .badge-daily {
+            top: 0.5rem;
+            left: 0.5rem;
+            background: #0066cc;
+            color: white;
+        }
+
+        .badge-rented {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #dc2626;
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+        }
+
+        .rented-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .apartment-info {
+            padding: 1rem;
+        }
+
+        .apartment-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #1a1a1a;
+        }
+
+        .apartment-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-row svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .price {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #1a1a1a;
+        }
+
+        .apartment-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .apartment-actions button,
+        .apartment-actions a {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-details {
+            background: white;
+            color: #0066cc;
+            border: 1px solid #0066cc;
+        }
+
+        .btn-details:hover {
+            background: #eff6ff;
+        }
+
+        .btn-contact {
+            background: #0066cc;
+            color: white;
+        }
+
+        .btn-contact:hover {
+            background: #0052a3;
+        }
+
+        .btn-find-similar {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-find-similar:hover {
+            background: #d1d5db;
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .no-results svg {
+            width: 64px;
+            height: 64px;
+            color: #d1d5db;
+            margin: 0 auto 1rem;
+        }
+
+        .no-results h3 {
+            font-size: 1.25rem;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .no-results p {
+            color: #6b7280;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 0.5rem;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .modal-close {
+            padding: 0.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 0.5rem;
+        }
+
+        .modal-close:hover {
+            background: #f3f4f6;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: normal;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.75rem;
+            padding-top: 1rem;
+        }
+
+        .form-actions button {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            padding: 2rem 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-contacts {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-contacts a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+        .footer-contacts a:hover {
+            color: #0066cc;
+        }
+
+        .footer-features {
+            list-style: none;
+        }
+
+        .footer-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: #6b7280;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #e5e7eb;
+            padding: 2rem 0;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        /* Floating Button */
+        .floating-btn {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 56px;
+            height: 56px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            transition: all 0.2s;
+        }
+
+        .floating-btn:hover {
+            background: #0052a3;
+            transform: scale(1.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-desktop {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .btn-need-apt {
+                display: none;
+            }
+
+            .apartments-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 1rem 0;
+        }
+
+        .mobile-nav.active {
+            display: flex;
+        }
+
+        .mobile-nav button {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            background: #f3f4f6;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        .mobile-nav button.active {
+            background: #0066cc;
+            color: white;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .icon-sm {
+            width: 16px;
+            height: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-main">
+                <a href="#" class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                    </svg>
+                    <span data-translate="siteName">BudapestRent</span>
+                </a>
+
+                <nav class="nav-desktop">
+                    <button class="active" onclick="setActiveTab('monthly')" data-translate="monthly">Долгосрочно</button>
+                    <button onclick="setActiveTab('daily')" data-translate="daily">Посуточно</button>
+                    <button onclick="setActiveTab('rented')" data-translate="rented">Уже сдано</button>
+                </nav>
+
+                <div class="header-actions">
+                    <button class="btn-need-apt" onclick="openRequestForm()">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <span data-translate="needApt">Нужна квартира?</span>
+                    </button>
+
+                    <button class="btn-lang" onclick="toggleLang()">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                        <span id="langText">EN</span>
+                    </button>
+
+                    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <nav class="mobile-nav" id="mobileNav">
+                <button class="active" onclick="setActiveTab('monthly'); toggleMobileMenu()" data-translate="monthly">Долгосрочно</button>
+                <button onclick="setActiveTab('daily'); toggleMobileMenu()" data-translate="daily">Посуточно</button>
+                <button onclick="setActiveTab('rented'); toggleMobileMenu()" data-translate="rented">Уже сдано</button>
+                <button class="btn-need-apt" style="display: block; background: #16a34a; color: white;" onclick="openRequestForm(); toggleMobileMenu()">
+                    <span data-translate="needApt">Нужна квартира?</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Contact Bar -->
+        <div class="contact-bar">
+            <div class="container">
+                <div class="contact-bar-content" id="contactBar">
+                    <!-- Will be populated by JS -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <!-- Filters -->
+            <button class="filters-toggle" onclick="toggleFilters()">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span data-translate="filters">Фильтры</span>
+            </button>
+
+            <div class="filters-panel" id="filtersPanel">
+                <div class="filters-grid" id="filtersGrid">
+                    <!-- Will be populated by JS -->
+                </div>
+                <div class="filters-actions">
+                    <button class="btn-primary" onclick="applyFilters()" data-translate="applyFilters">Применить</button>
+                    <button class="btn-secondary" onclick="resetFilters()" data-translate="resetFilters">Сбросить</button>
+                </div>
+            </div>
+
+            <!-- Apartments Grid -->
+            <div id="apartmentsContainer">
+                <!-- Will be populated by JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-grid">
+                    <div class="footer-section">
+                        <h3 data-translate="contacts">Контакты владельца</h3>
+                        <div class="footer-contacts" id="footerContacts">
+                            <!-- Will be populated by JS -->
+                        </div>
+                    </div>
+
+                    <div class="footer-section">
+                        <h3 data-translate="noCommission">Без комиссий</h3>
+                        <ul class="footer-features">
+                            <li>
+                                <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span data-translate="directContact">Прямой контакт с владельцем</span>
+                            </li>
+                            <li>
+                                <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span data-translate="workingHours">Работаю 09:00-21:00 (Будапешт)</span>
+                            </li>
+                            <li>
+                                <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span data-translate="responseTime">Отвечаю обычно в течение 1-2 часов</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 <span data-translate="siteName">BudapestRent</span> • <span id="ownerNameFooter"></span></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Request Form Modal -->
+    <div class="modal" id="requestModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-translate="requestFormTitle">ИЩЕТЕ КВАРТИРУ?</h2>
+                <button class="modal-close" onclick="closeRequestForm()">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="color: #6b7280; margin-bottom: 1.5rem;" data-translate="requestFormSubtitle">Заполните форму — я подберу варианты!</p>
+                <form id="requestForm" onsubmit="handleRequestSubmit(event)">
+                    <div class="form-group">
+                        <label>📅 <span data-translate="needAptFrom">Нужна квартира с</span></label>
+                        <input type="date" name="needFrom" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>📍 <span data-translate="district">Район</span></label>
+                        <div class="checkbox-grid" id="districtCheckboxes">
+                            <!-- Will be populated by JS -->
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>💶 <span data-translate="yourBudget">Бюджет (мес)</span></label>
+                        <div class="price-inputs">
+                            <input type="number" name="budgetMin" placeholder="От" min="0">
+                            <span>-</span>
+                            <input type="number" name="budgetMax" placeholder="До" min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>🏠 <span data-translate="type">Тип жилья</span></label>
+                        <select name="type">
+                            <option value="all" data-translate="allTypes">Все типы</option>
+                            <option value="studio" data-translate="studio">Студия</option>
+                            <option value="1room" data-translate="1room">1 комната</option>
+                            <option value="2room" data-translate="2room">2 комнаты</option>
+                            <option value="shared" data-translate="shared">Комната в квартире</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>👤 <span data-translate="yourContacts">Ваши контакты</span></label>
+                        <input type="text" name="name" placeholder="Имя" required style="margin-bottom: 0.5rem;">
+                        <input type="text" name="telegram" placeholder="Telegram: @username" required style="margin-bottom: 0.5rem;">
+                        <input type="tel" name="whatsapp" placeholder="WhatsApp: +36..." style="margin-bottom: 0.5rem;">
+                        <input type="email" name="email" placeholder="Email">
+                    </div>
+
+                    <div class="form-group">
+                        <label>💬 <span data-translate="commentOptional">Комментарий (необязательно)</span></label>
+                        <textarea name="comment" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary" style="flex: 2;">
+                            📩 <span data-translate="sendRequest">Отправить запрос</span>
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="closeRequestForm()">
+                            <span data-translate="cancel">Отмена</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Apartment Details Modal -->
+    <div class="modal" id="detailsModal">
+        <div class="modal-content" style="max-width: 1000px;">
+            <div id="detailsContent">
+                <!-- Will be populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Telegram Button -->
+    <a href="#" id="floatingTelegram" class="floating-btn" target="_blank" rel="noopener noreferrer">
+        <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+    </a>
+
+    <script src="apartments.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
