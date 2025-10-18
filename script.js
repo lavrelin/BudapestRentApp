@@ -1,16 +1,16 @@
 // ГЛАВНАЯ ЛОГИКА САЙТА - Cyberpunk Edition
 
 let currentLang = 'en';
-let activeTab = 'longterm'; // longterm / daily
+let activeTab = 'apartments'; // apartments / rooms / daily
 let filteredApartments = [];
-let currentSort = 'newest'; // newest / priceAsc / priceDesc
 let map;
 let markersLayer;
 
 // Переводы
 const translations = {
   en: {
-    longterm: "Long-term",
+    apartments: "Apartments",
+    rooms: "Rooms",
     daily: "Daily",
     offer: "Offer Your Apartment",
     looking: "Looking for Apartment",
@@ -19,19 +19,11 @@ const translations = {
     legendRoom: "Room",
     apply: "Apply",
     reset: "Reset",
-    sortBy: "Sort by",
-    sortNewest: "Newest",
-    sortPriceAsc: "Price: Low to High",
-    sortPriceDesc: "Price: High to Low",
     district: "District",
     allDistricts: "All Districts",
     price: "Price",
     from: "from",
     to: "to",
-    propertyType: "Type",
-    allTypes: "All Types",
-    apartments: "Apartments",
-    rooms: "Rooms",
     roomsCount: "Rooms",
     deposit: "Deposit",
     "1month": "1 month",
@@ -50,17 +42,11 @@ const translations = {
     aboutText: "Modern platform for finding apartments and rooms in Budapest. Cyberpunk style, convenient filters, interactive map.",
     districts: "Districts",
     noResults: "No results found",
-    tryFilters: "Try adjusting filters",
-    description: "Description",
-    details: "Details",
-    priceLabel: "Price",
-    depositLabel: "Deposit",
-    districtLabel: "District",
-    typeLabel: "Type",
-    moveInLabel: "Available from"
+    tryFilters: "Try adjusting filters"
   },
   ru: {
-    longterm: "Долгосрочно",
+    apartments: "Квартиры",
+    rooms: "Комнаты",
     daily: "Посуточно",
     offer: "Предложить квартиру",
     looking: "Ищу квартиру",
@@ -69,19 +55,11 @@ const translations = {
     legendRoom: "Комната",
     apply: "Применить",
     reset: "Сбросить",
-    sortBy: "Сортировка",
-    sortNewest: "Новые",
-    sortPriceAsc: "Цена: по возрастанию",
-    sortPriceDesc: "Цена: по убыванию",
     district: "Район",
     allDistricts: "Все районы",
     price: "Цена",
     from: "от",
     to: "до",
-    propertyType: "Тип",
-    allTypes: "Все типы",
-    apartments: "Квартиры",
-    rooms: "Комнаты",
     roomsCount: "Комнат",
     deposit: "Депозит",
     "1month": "1 месяц",
@@ -100,14 +78,7 @@ const translations = {
     aboutText: "Современная платформа для поиска квартир и комнат в Будапеште. Киберпанк-стиль, удобные фильтры, интерактивная карта.",
     districts: "Районы",
     noResults: "Ничего не найдено",
-    tryFilters: "Попробуйте изменить фильтры",
-    description: "Описание",
-    details: "Детали",
-    priceLabel: "Цена",
-    depositLabel: "Депозит",
-    districtLabel: "Район",
-    typeLabel: "Тип",
-    moveInLabel: "Доступна с"
+    tryFilters: "Попробуйте изменить фильтры"
   }
 };
 
@@ -116,7 +87,6 @@ let filters = {
   district: 'all',
   priceMin: '',
   priceMax: '',
-  propertyType: 'all', // all / apartment / room
   rooms: 'all',
   deposit: 'all',
   moveInDate: ''
@@ -231,19 +201,14 @@ function setActiveTab(tab) {
   const buttons = document.querySelectorAll('.nav-desktop button');
   buttons.forEach((btn, idx) => {
     btn.classList.remove('active');
-    if ((tab === 'longterm' && idx === 0) || 
-        (tab === 'daily' && idx === 1)) {
+    if ((tab === 'apartments' && idx === 0) || 
+        (tab === 'rooms' && idx === 1) || 
+        (tab === 'daily' && idx === 2)) {
       btn.classList.add('active');
     }
   });
   
   renderFilters();
-  applyFilters();
-}
-
-// Обновление сортировки
-function updateSort(sortType) {
-  currentSort = sortType;
   applyFilters();
 }
 
@@ -274,39 +239,28 @@ function renderFilters() {
     </div>
   `;
 
-  // Фильтры для долгосрочной аренды
-  if (activeTab === 'longterm') {
+  // Фильтры для квартир
+  if (activeTab === 'apartments') {
     html += `
       <div class="filter-group">
-        <label>${translations[currentLang].propertyType}</label>
-        <select id="filterPropertyType" onchange="updateFilter('propertyType', this.value)">
-          <option value="all">${translations[currentLang].allTypes}</option>
-          <option value="apartment" ${filters.propertyType === 'apartment' ? 'selected' : ''}>${translations[currentLang].apartments}</option>
-          <option value="room" ${filters.propertyType === 'room' ? 'selected' : ''}>${translations[currentLang].rooms}</option>
+        <label>${translations[currentLang].roomsCount}</label>
+        <select id="filterRooms" onchange="updateFilter('rooms', this.value)">
+          <option value="all">${translations[currentLang].allDistricts}</option>
+          <option value="1" ${filters.rooms === '1' ? 'selected' : ''}>1</option>
+          <option value="2" ${filters.rooms === '2' ? 'selected' : ''}>2</option>
+          <option value="3" ${filters.rooms === '3' ? 'selected' : ''}>3</option>
         </select>
       </div>
     `;
+  }
 
-    // Показываем фильтр комнат только если выбраны квартиры
-    if (filters.propertyType === 'all' || filters.propertyType === 'apartment') {
-      html += `
-        <div class="filter-group">
-          <label>${translations[currentLang].roomsCount}</label>
-          <select id="filterRooms" onchange="updateFilter('rooms', this.value)">
-            <option value="all">${translations[currentLang].allTypes}</option>
-            <option value="1" ${filters.rooms === '1' ? 'selected' : ''}>1</option>
-            <option value="2" ${filters.rooms === '2' ? 'selected' : ''}>2</option>
-            <option value="3" ${filters.rooms === '3' ? 'selected' : ''}>3</option>
-          </select>
-        </div>
-      `;
-    }
-
+  // Фильтр депозита для комнат и квартир
+  if (activeTab !== 'daily') {
     html += `
       <div class="filter-group">
         <label>${translations[currentLang].deposit}</label>
         <select id="filterDeposit" onchange="updateFilter('deposit', this.value)">
-          <option value="all">${translations[currentLang].allTypes}</option>
+          <option value="all">${translations[currentLang].allDistricts}</option>
           <option value="1" ${filters.deposit === '1' ? 'selected' : ''}>${translations[currentLang]['1month']}</option>
           <option value="2" ${filters.deposit === '2' ? 'selected' : ''}>${translations[currentLang]['2months']}</option>
         </select>
@@ -315,14 +269,6 @@ function renderFilters() {
   }
 
   document.getElementById('filtersGrid').innerHTML = html;
-  
-  // Обновляем селект сортировки
-  const sortOptions = document.querySelectorAll('#sortSelect option');
-  sortOptions.forEach((opt, idx) => {
-    const keys = ['sortNewest', 'sortPriceAsc', 'sortPriceDesc'];
-    opt.textContent = translations[currentLang][keys[idx]];
-  });
-  document.querySelector('label[data-translate="sortBy"]').textContent = translations[currentLang].sortBy + ':';
 }
 
 // Обновление фильтра
@@ -333,8 +279,9 @@ function updateFilter(key, value) {
 // Применение фильтров
 function applyFilters() {
   let filtered = apartmentsData.filter(apt => {
-    // Фильтр по категории (долгосрочно = квартиры + комнаты)
-    if (activeTab === 'longterm' && apt.category === 'daily') return false;
+    // Фильтр по категории
+    if (activeTab === 'apartments' && apt.category !== 'apartment') return false;
+    if (activeTab === 'rooms' && apt.category !== 'room') return false;
     if (activeTab === 'daily' && apt.category !== 'daily') return false;
 
     // Фильтр по району
@@ -345,61 +292,9 @@ function applyFilters() {
     if (filters.priceMin && price < parseInt(filters.priceMin)) return false;
     if (filters.priceMax && price > parseInt(filters.priceMax)) return false;
 
-    // Фильтр по типу недвижимости (только для долгосрочной)
-    if (activeTab === 'longterm' && filters.propertyType !== 'all') {
-      if (filters.propertyType !== apt.category) return false;
-    }
-
     // Фильтр по количеству комнат (только для квартир)
-    if (filters.rooms !== 'all' && apt.category === 'apartment') {
+    if (activeTab === 'apartments' && filters.rooms !== 'all') {
       if (apt.rooms !== parseInt(filters.rooms)) return false;
-    }
-
-    // Фильтр по депозиту
-    if (filters.deposit !== 'all' && apt.deposit !== parseInt(filters.deposit)) return false;
-
-    return true;
-  });
-
-  // Сортировка
-  filtered.sort((a, b) => {
-    const priceA = a.category === 'daily' ? a.pricePerNight : a.pricePerMonth;
-    const priceB = b.category === 'daily' ? b.pricePerNight : b.pricePerMonth;
-
-    switch (currentSort) {
-      case 'newest':
-        // Сортируем по ID (предполагаем, что больший ID = новее)
-        return b.id - a.id;
-      case 'priceAsc':
-        return priceA - priceB;
-      case 'priceDesc':
-        return priceB - priceA;
-      default:
-        return 0;
-    }
-  });
-
-  filteredApartments = filtered;
-  renderApartments();
-  updateMapMarkers();
-}
-
-// Сброс фильтров
-function resetFilters() {
-  filters = {
-    district: 'all',
-    priceMin: '',
-    priceMax: '',
-    propertyType: 'all',
-    rooms: 'all',
-    deposit: 'all',
-    moveInDate: ''
-  };
-  currentSort = 'newest';
-  document.getElementById('sortSelect').value = 'newest';
-  renderFilters();
-  applyFilters();
-} false;
     }
 
     // Фильтр по депозиту
@@ -497,9 +392,9 @@ function renderApartments() {
           </div>
 
           <div class="apartment-actions">
-            <button onclick="openDetails(${apt.id})" class="btn-details">
+            <a href="${apt.telegramLink}" target="_blank" class="btn-details">
               ${translations[currentLang].fullDescription}
-            </button>
+            </a>
             <div style="display: flex; gap: 0.5rem;">
               <a href="https://t.me/${ownerContacts.telegram.replace('@', '')}" target="_blank" 
                  style="flex: 1; padding: 0.75rem; border-radius: 8px; background: var(--neon-blue); color: #000; text-align: center; text-decoration: none; font-weight: 600; transition: all 0.3s;"
@@ -527,107 +422,6 @@ function renderApartments() {
   }).join('');
 
   container.innerHTML = `<div class="apartments-grid">${cardsHtml}</div>`;
-}
-
-// Открыть модальное окно с деталями
-function openDetails(aptId) {
-  const apt = apartmentsData.find(a => a.id === aptId);
-  if (!apt) return;
-
-  const title = apt.title[currentLang];
-  const description = apt.description[currentLang];
-  const price = apt.category === 'daily' ? apt.pricePerNight : apt.pricePerMonth;
-  const priceLabel = apt.category === 'daily' ? 
-    translations[currentLang].perNight : 
-    translations[currentLang].perMonth;
-
-  const typeLabel = apt.category === 'room' ? 
-    translations[currentLang].legendRoom :
-    `${apt.rooms} ${translations[currentLang].roomsCount}`;
-
-  const suitableForText = apt.suitableFor.map(s => translations[currentLang][s]).join(', ');
-
-  const galleryHtml = apt.photos.map(photo => 
-    `<img src="${photo}" alt="${title}" loading="lazy">`
-  ).join('');
-
-  const html = `
-    <div class="modal-classic-header">
-      <h2 class="modal-classic-title">${title}</h2>
-      <p class="modal-classic-subtitle">${districts[apt.district].name[currentLang]} • ${apt.specificDistrict}</p>
-      <button class="modal-close-classic" onclick="closeDetails()">×</button>
-    </div>
-
-    <div class="modal-classic-body">
-      <div class="modal-image-gallery">
-        ${galleryHtml}
-      </div>
-
-      <div class="modal-info-grid">
-        <div class="modal-info-item">
-          <span class="modal-info-label">${translations[currentLang].priceLabel}</span>
-          <span class="modal-info-value">${price.toLocaleString()} Ft${priceLabel}</span>
-        </div>
-
-        <div class="modal-info-item">
-          <span class="modal-info-label">${translations[currentLang].districtLabel}</span>
-          <span class="modal-info-value">${districts[apt.district].name[currentLang]}</span>
-        </div>
-
-        <div class="modal-info-item">
-          <span class="modal-info-label">${translations[currentLang].typeLabel}</span>
-          <span class="modal-info-value">${typeLabel}</span>
-        </div>
-
-        ${apt.category !== 'daily' ? `
-          <div class="modal-info-item">
-            <span class="modal-info-label">${translations[currentLang].depositLabel}</span>
-            <span class="modal-info-value">${apt.deposit} ${apt.deposit === 1 ? translations[currentLang]['1month'] : translations[currentLang]['2months']}</span>
-          </div>
-        ` : ''}
-
-        ${apt.moveInDate ? `
-          <div class="modal-info-item">
-            <span class="modal-info-label">${translations[currentLang].moveInLabel}</span>
-            <span class="modal-info-value">${apt.moveInDate}</span>
-          </div>
-        ` : ''}
-
-        <div class="modal-info-item">
-          <span class="modal-info-label">${translations[currentLang].suitableFor}</span>
-          <span class="modal-info-value">${suitableForText}</span>
-        </div>
-      </div>
-
-      <div class="modal-description">
-        <h3>${translations[currentLang].description}</h3>
-        <p>${description}</p>
-      </div>
-
-      <div class="modal-contact-buttons">
-        <a href="${apt.telegramLink}" target="_blank" class="modal-contact-btn telegram">
-          📱 ${translations[currentLang].fullDescription}
-        </a>
-        <a href="https://t.me/${ownerContacts.telegram.replace('@', '')}" target="_blank" class="modal-contact-btn telegram">
-          💬 Telegram
-        </a>
-        <a href="https://wa.me/${ownerContacts.whatsapp.replace(/\D/g, '')}" target="_blank" class="modal-contact-btn whatsapp">
-          📞 WhatsApp
-        </a>
-        <a href="${ownerContacts.facebook}" target="_blank" class="modal-contact-btn facebook">
-          👥 Facebook
-        </a>
-      </div>
-    </div>
-  `;
-
-  document.getElementById('modalContent').innerHTML = html;
-  document.getElementById('detailsModal').classList.add('active');
-}
-
-// Закрыть модальное окно
-function closeDetails() {
-  document.getElementById('detailsModal').classList.remove('active');
 }
 
 // Закрытие модальных окон по клику вне их
